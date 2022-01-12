@@ -128,13 +128,21 @@ router.delete("/delete-products/:ProductId", (req, res, next) => {
     Product.deleteOne({ _id: id }).exec().then(dat => {
         console.log(dat);
         if (dat.deletedCount === 1) {
-            res.status(200).json({ dat, message: 'Product deleted successfully...' });
+            res.status(200).json({ 
+                status:200,
+                deletedCount:dat.deletedCount,
+                message: 'Product deleted successfully...',
+            });
 
         }
         else {
 
         }
-        res.status(200).json({ dat, message: 'Product Not Found on db.' });
+        res.status(200).json({
+            status:404,
+            deletedCount:dat.deletedCount,
+            message:'Product Not Found on db.',
+         });
     })
         .catch(err => {
             console.log(err);
@@ -167,19 +175,32 @@ router.put("/update-product/:productId", (req, res, next) => {
                 // console.log(result);
 
                 res.status(200).json({
-                    data: {
+                    status:200,
+                    modifiedCount:result.modifiedCount,
+                    message: 'Product updated successfully...',
+                    products: {
                         _id: id,
                         request: {
                             type: 'GET',
                             url: `http://localhost:8080/products/${id}`
                         }
                     },
-                    message: 'Product updated successfully...'
                 });
 
             } else {
                 console.log(result);
-                res.status(200).json({ data: result, message: 'Product Could not update...' });
+                res.status(200).json({
+                    status:400,
+                    modifiedCount:result.modifiedCount,
+                    message: 'Product Could not update...', 
+                    products: {
+                        _id: id,
+                        request: {
+                            type: 'GET',
+                            url: `http://localhost:8080/products/${id}`
+                        } 
+                    }, 
+                    });
             }
 
         })

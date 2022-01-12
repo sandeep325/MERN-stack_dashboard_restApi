@@ -1,9 +1,10 @@
 import React , {useState,useEffect}  from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { toast,ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProductList = () => {
-
 
 
     const [Products , setproducts]  = useState([]);
@@ -22,11 +23,8 @@ const ProductList = () => {
      }
  
      getProduct();
-
-
  
-    } );
-
+    });
 
     function deleteCustomer(id) {
       var confirmBox =   window.confirm(
@@ -42,6 +40,8 @@ const ProductList = () => {
                     // console.log(response.data.products);
                     const productList = response.data.products;
                     setproducts(productList);
+                toast.error('product deleted Successfully.' ,{position: toast.POSITION.TOP_CENTER} ,{autoClose:9000})
+
                     }
               
                 }
@@ -60,6 +60,7 @@ const ProductList = () => {
 
             <div className="row">
                 <div className="col-lg-12">
+                <ToastContainer style = {{marginTop:"10%", zIndex:999}} />  
                 <div className="overview-wrap float-right">
                         <Link to="/addproduct" className="btn btn-info btn-md">
                             <i className="zmdi zmdi-plus"></i>add product</Link>
