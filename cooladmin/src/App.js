@@ -10,6 +10,7 @@ import Addproduct from './Components/Addproduct';
 import Editproduct from './Components/Editproduct';
 import Orderlist from './Components/Orderlist';
 import Addorder from './Components/Addorder';
+import Editorder from './Components/Editorder';
 const App = () => {
   return (
     <React.Fragment>
@@ -29,6 +30,7 @@ const App = () => {
                     <Route exact path="/editproduct/:id" component={Editproduct} />
                     <Route exact path = "/orderlist"   component={Orderlist} />
                     <Route exact path = "/addorder" component={Addorder} />
+                    <Route exact path = "/editorder/:id" component={Editorder} />
                   </Switch>
 
                   {/* <Dashboard/>,  */}

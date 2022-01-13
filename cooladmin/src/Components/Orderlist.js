@@ -14,7 +14,7 @@ const Orderlist = () => {
             const response = await axios.get('http://localhost:8080/orders/');
             // console.log(response.data);
             if (response.data.status === 200) {
-                const orderArrCount = response.data.countOrder;
+                // const orderArrCount = response.data.countOrder;
                 console.log(response.data.orders);
                 setOrders(response.data.orders);
             } else {
@@ -98,7 +98,7 @@ const Orderlist = () => {
                                         </button>
                                         </td>
                                         <td>
-                                            <Link to="" className="btn btn-info btn-sm">
+                                            <Link to={"editorder/"+OrderData._id} className="btn btn-info btn-sm">
                                                 <i className="fa fa-pencil-square-o"></i>edit</Link>
                                         </td>
                                         <td><button type="button" className="btn btn-danger btn-sm" onClick={(e) => deleteOrder(OrderData._id)} >

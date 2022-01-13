@@ -97,7 +97,7 @@ const ProductList = () => {
                                     <td>
                                         <Link to= {"/editproduct/"+Product._id} params={Product._id}  className="btn btn-info btn-sm">
                                             <i className="fa fa-pencil-square-o"></i>edit</Link>
-                                            </td>  
+                                            </td>   
                                     <td><button type="button" className="btn btn-danger btn-sm" onClick={(e)=>deleteCustomer(Product._id)}  >
                                             <i className="fa fa-times-circle-o"></i> delete
                                         </button></td>

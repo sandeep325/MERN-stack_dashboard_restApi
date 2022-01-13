@@ -52,17 +52,25 @@ router.get("/:orderId", (req, res, next) => {
         .then(result => {
 
             if(!result) {
-                return res.status(404).json({message:`Order not found for id:${id}`});
+                return res.status(404).json({
+                    status:404,
+                    message:`Order not found for id:${id}`
+                });
             }
             res.status(200).json({
-                _id: result._id,
-                product: result.product,
-                name: result.name,
-                quantity: result.quantity,
-                request: {
-                    type: 'GET',
-                    url: 'http://localhost:8080/orders'
+                status:200,
+                message:`order fetch by id:${id}`,
+                order:{
+                    _id: result._id,
+                    product: result.product,
+                    name: result.name,
+                    quantity: result.quantity,
+                    request: {
+                        type: 'GET',
+                        url: 'http://localhost:8080/orders'
+                    }
                 }
+               
 
             });
         }).catch(err => {
