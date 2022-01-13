@@ -20,11 +20,12 @@ const ProductList = () => {
          setproducts(productList);
  
          }
-     }
- 
+     } 
      getProduct();
  
-    });
+    } , [] 
+    
+    );
 
     function deleteCustomer(id) {
       var confirmBox =   window.confirm(
