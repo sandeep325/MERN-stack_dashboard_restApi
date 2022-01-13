@@ -40,7 +40,7 @@ const Editproduct = () => {
     }
 
     const validateData = Yup.object({
-        name: Yup.string().max(30, 'Must be 15 characters or less').required("Product name must be required."),
+        name: Yup.string().max(30, 'Must be 30 characters or less').required("Product name must be required."),
         price: Yup.number().typeError('Please enter valid amount.').required("Price  must be required"),
         // password: Yup.string().required("Password must be required.").max(12, "Password should be less than or eqal to 12 char.")
     })

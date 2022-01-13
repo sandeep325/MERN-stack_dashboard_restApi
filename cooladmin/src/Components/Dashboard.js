@@ -22,7 +22,6 @@ const Dashboard = () => {
 
 //    } );
 
-
     return (
      <React.Fragment>
      <div className="row">
@@ -33,7 +32,12 @@ const Dashboard = () => {
                             </div>
                         </div>
                         <div className="row m-t-25">
-                            <div className="col-sm-6 col-lg-3">
+
+                        <div className="col-sm-8 col-lg-2">
+                            </div>
+
+
+                            <div className="col-sm-8 col-lg-4">
                                 <div className="overview-item overview-item--c1">
                                     <div className="overview__inner">
                                         <div className="overview-box clearfix">
@@ -42,7 +46,7 @@ const Dashboard = () => {
                                             </div>
                                             <div className="text">
                                                 <h2>10368</h2>
-                                                <span>members online</span>
+                                                <span>NO OF ORDER'S</span>
                                             </div>
                                         </div>
                                         <div className="overview-chart">
@@ -51,7 +55,8 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-sm-6 col-lg-3">
+
+                            <div className="col-sm-8 col-lg-4">
                                 <div className="overview-item overview-item--c2">
                                     <div className="overview__inner">
                                         <div className="overview-box clearfix">
@@ -60,7 +65,7 @@ const Dashboard = () => {
                                             </div>
                                             <div className="text">
                                                 <h2>388,688</h2>
-                                                <span>items solid</span>
+                                                <span>TOTAL PRODUCT'S</span>
                                             </div>
                                         </div>
                                         <div className="overview-chart">
@@ -69,7 +74,11 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-sm-6 col-lg-3">
+
+                            <div className="col-sm-8 col-lg-2">
+                            </div>
+
+                            {/* <div className="col-sm-6 col-lg-3">
                                 <div className="overview-item overview-item--c3">
                                     <div className="overview__inner">
                                         <div className="overview-box clearfix">
@@ -86,8 +95,8 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="col-sm-6 col-lg-3">
+                            </div> */}
+                            {/* <div className="col-sm-6 col-lg-3">
                                 <div className="overview-item overview-item--c4">
                                     <div className="overview__inner">
                                         <div className="overview-box clearfix">
@@ -104,14 +113,14 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                         
                         <div className="row">
                             <div className="col-lg-12">
-                                <h2 className="title-1 m-b-25 text-center">users</h2>
+                                {/* <h2 className="title-1 m-b-25 text-center">users</h2> */}
                                 <div className="table-responsive table--no-card m-b-40">
-                                    <table className="table table-borderless table-striped table-earning">
+                                    {/* <table className="table table-borderless table-striped table-earning">
                                         <thead>
                                             <tr>
                                                 <th>S.No.</th>
@@ -122,7 +131,7 @@ const Dashboard = () => {
                                                 <th className="text-right">City</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody> */}
                                             
                                             {/* {Customers.map((Customer,i) =>( 
                                                 <tr>
@@ -136,8 +145,8 @@ const Dashboard = () => {
                                                 
                                             ) )} */}
        
-                                        </tbody>
-                                    </table>
+                                        {/* </tbody>
+                                    </table> */}
                                 </div>
                             </div>
                             

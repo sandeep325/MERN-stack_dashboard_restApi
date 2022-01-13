@@ -27,12 +27,12 @@ const Sidebar = () => {
                                     <i className="fas fa-table"></i>Add New Product</Link>
                             </li>
                             <li>
-                                <Link to="">
+                                <Link to="/orderlist">
                                     <i className="fas fa-chart-bar"></i>Order List</Link>
                             </li>
 
                             <li>
-                                <Link to="">
+                                <Link to="/addorder">
                                     <i className="fas fa-table"></i>Add New Order</Link>
                             </li>
 

@@ -28,7 +28,7 @@ const ProductList = () => {
 
     function deleteCustomer(id) {
       var confirmBox =   window.confirm(
-            "Do you really want to delete this User ?"
+            "Do you really want to delete this Product ?"
           )
           if (confirmBox === true) {
             async function delCustomer() {

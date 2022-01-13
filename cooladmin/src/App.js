@@ -8,7 +8,8 @@ import Dashboard from './Components/Dashboard';
 import Productlist from './Components/Productlist';
 import Addproduct from './Components/Addproduct';
 import Editproduct from './Components/Editproduct';
-
+import Orderlist from './Components/Orderlist';
+import Addorder from './Components/Addorder';
 const App = () => {
   return (
     <React.Fragment>
@@ -25,9 +26,9 @@ const App = () => {
                     <Route exact path="/" component={Dashboard} />
                     <Route exact path="/productlist" component={Productlist} />
                     <Route exact path="/addproduct" component={Addproduct} />
-
                     <Route exact path="/editproduct/:id" component={Editproduct} />
-
+                    <Route exact path = "/orderlist"   component={Orderlist} />
+                    <Route exact path = "/addorder" component={Addorder} />
                   </Switch>
 
                   {/* <Dashboard/>,  */}

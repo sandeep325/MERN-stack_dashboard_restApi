@@ -14,9 +14,10 @@ router.get("/", (req, res, next) => {
         .exec()
         .then(result => {
             res.status(200).json({
+                status:200,
                 countOrder: result.length,
+                message: 'All order are fetch successfully...',
                 orders: result.map(data => {
-
                     return {
 
                         _id: data._id,
@@ -91,8 +92,9 @@ router.post("/addorders", (req, res, next) => {
 
         order.save().then(result => {
             res.status(201).json({
+                status:201,
                 message: 'You have successfully order...',
-                data: {
+                order: {
                     _id: result._id,
                     name: result.name,
                     product: result.product,
@@ -127,10 +129,19 @@ router.delete("/delete-orders/:orderId", (req, res, next) => {
         .exec()
         .then(result => {
             if (result.deletedCount == 1) {
-                res.status(200).json({ message: 'Your order is successfully deleted...', result });
+                res.status(200).json({ 
+                    status:200,
+                    deletedCount:result.deletedCount,
+                    message: 'Your order is successfully deleted...',                 
+                    
+                 });
 
             } else {
-                res.status(200).json({ message: 'Your order could not deleted please try again...', result });
+                res.status(200).json({
+                    status:404,
+                    deletedCount:result.deletedCount,
+                     message: 'Your order could not deleted please try again...', 
+                     result });
 
             }
 
