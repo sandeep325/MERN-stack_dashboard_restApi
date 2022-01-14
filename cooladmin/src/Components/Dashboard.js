@@ -1,26 +1,43 @@
-// import axios from "axios";
-// import React , {useState,useEffect} from "react";
-import React from "react";
+import axios from "axios";
+import React , {useState,useEffect} from "react";
+// import React from "react";
 
 const Dashboard = () => {
-//      const [Customers , setCustomers]  = useState([]);
-//    useEffect( () => {
+     const [Countorders , setCountorders]  = useState();
+     const [Products , setProducts]  = useState();
+   useEffect( () => {
           
-//     async function getCustomer() {
+    async function getOrders() {
 
-//         const response = await axios.get('http://localhost/symfony_api/public/index.php/api/customers');
-//         // console.log(response.data);
-//         if(response.data.status === 200) {
-//         console.log(response.data.data);
-//         const customersList = response.data.data;
-//         setCustomers(customersList);
+        const response = await axios.get('http://localhost:8080/orders/');
+        console.log(response.data);
+        if(response.data.status === 200) {
+        setCountorders(response.data.countOrder);
+        }
+    }
 
-//         }
-//     }
+    getOrders();
 
-//     getCustomer();
+   } ,[]);
 
-//    } );
+
+
+
+   useEffect( () => {
+          
+    async function getProduct() {
+
+        const response = await axios.get('http://localhost:8080/products');
+        console.log(response.data);
+        if(response.data.status === 200) {
+            setProducts(response.data.countproduct);
+        }
+    }
+
+    getProduct();
+
+   } ,[]);
+
 
     return (
      <React.Fragment>
@@ -45,7 +62,7 @@ const Dashboard = () => {
                                                 <i className="zmdi zmdi-account-o"></i>
                                             </div>
                                             <div className="text">
-                                                <h2>10368</h2>
+                                                <h2 className="text-center">{Countorders}</h2>
                                                 <span>NO OF ORDER'S</span>
                                             </div>
                                         </div>
@@ -64,7 +81,7 @@ const Dashboard = () => {
                                                 <i className="zmdi zmdi-shopping-cart"></i>
                                             </div>
                                             <div className="text">
-                                                <h2>388,688</h2>
+                                                <h2 className="text-center">{Products}</h2>
                                                 <span>TOTAL PRODUCT'S</span>
                                             </div>
                                         </div>

@@ -47,6 +47,28 @@ const Editorder = () => {
 
     // ===================================CALL UPDATE ORDER API ===============================================
     const orderOrderAction = (values) => {
+        // console.log(values);     
+        const param = [
+            { "propName":"name", "value":values.name},
+            { "propName":"product", "value":values.product},
+            { "propName":"quantity", "value":values.quantity},
+        ];
+        // console.log(param);
+        async function updateOrder() {
+            const response = await axios.put(`http://localhost:8080/orders/update-orders/${id}`,param);
+            if(response.data.status === 200) {
+                toast.success(response.data.message , {autoClose:9000})
+    
+            }  else {
+                toast.warning(response.data.message , {autoClose:9000})
+                return false;
+            console.log(response.data);
+                      
+            }
+
+        }
+        updateOrder();
+
 
     }
 

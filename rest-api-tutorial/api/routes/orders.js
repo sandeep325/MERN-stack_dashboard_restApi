@@ -174,6 +174,7 @@ router.put('/update-orders/:orderId', (req, res, next) => {
         .then(result => {
             if(result.acknowledged == true && result.modifiedCount == 1) {
             res.status(200).json({
+                status:200,
                 message: 'Your order is updated successfully...',
                 data: {
                     _id: id,
@@ -187,7 +188,8 @@ router.put('/update-orders/:orderId', (req, res, next) => {
             } else {
 
                 res.status(200).json({
-                    message: 'Your order is not  updated please try again ...',
+                    status:404,
+                    message: 'Your order is not  updated or already updated...',
                 });
 
              }
