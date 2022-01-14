@@ -11,6 +11,7 @@ mongoose.connect('mongodb://localhost:27017/nodeapi', () => { console.log("[+] S
 
 
 app.use(morgan("dev"));
+app.use('/product_images',express.static("product_images"));
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 

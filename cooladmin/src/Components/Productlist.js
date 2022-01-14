@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const ProductList = () => {
 
-
+const Api_Server_Port = "http://localhost:8080/";
     const [Products , setproducts]  = useState([]);
     useEffect( () => {
            
@@ -75,6 +75,7 @@ const ProductList = () => {
                                <th>S.No.</th>
                                <th>Product ID</th>
                                <th>Product Name</th>
+                               <th>Product Image</th>
                                <th className="text-right">Product Price</th>
                                <th>View</th>
                                 <th>Edit</th>
@@ -89,6 +90,7 @@ const ProductList = () => {
                                     <td>{(i++)+1}</td>  
                                      <td>{Product._id}</td>
                                      <td>{Product.name}</td>
+                                     <td>{(Product.productImage  ? <img src= {Api_Server_Port+Product.productImage} alt="product image"/> : <span style={{ color: 'red' }}>NULL</span>)}</td>
                                      <td className="text-right">{Product.price}/Rs.</td>
                                     <td><button type="reset" className="btn btn-warning btn-sm">
                                     <i className="fa fa-eye"></i> view

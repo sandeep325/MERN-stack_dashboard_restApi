@@ -3,13 +3,14 @@ import axios from "axios";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { toast,ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 const Addproduct = () => {
 
     const formInitialschema = {
         name: '',
         price: '',
+        productImage:'',
 
     }
     const validate = Yup.object({
@@ -19,16 +20,16 @@ const Addproduct = () => {
     })
 
     const formHandelingFun = (value) => {
-           const params =  value;
+        const params = value;
         //    console.log(params); return false;
         async function addNewproduct() {
             const response = await axios.post(`http://localhost:8080/products/addproducts`, params);
-            if(response.data.status === 200) {
+            if (response.data.status === 200) {
                 console.log(response.data);
-              toast.success('New  Product Added Successfully.' , {autoClose:9000})
-            
+                toast.success('New  Product Added Successfully.', { autoClose: 9000 })
+
             } else {
-                console.log(response.data);
+                console.log(response.error);
             }
         }
         addNewproduct();
@@ -43,16 +44,16 @@ const Addproduct = () => {
     return (
         <React.Fragment>
             <div className="col-lg-12">
-          
+
                 <div className="card">
-                 <ToastContainer style = {{marginTop:"10%", zIndex:999}} />   
+                    <ToastContainer style={{ marginTop: "10%", zIndex: 999 }} />
                     <div className="card-header text-center">Add New Product</div>
                     <div className="card-body card-block">
                         <Formik initialValues={formInitialschema} onSubmit={value => { formHandelingFun(value) }} validationSchema={validate}>
                             <Form action="" method="post" className="" >
                                 <div className="form-group">
                                     <div className="input-group">
-                                        <Field type="text" id="name" name="name" placeholder="Product Name" className="form-control"  autoComplete="off" />
+                                        <Field type="text" id="name" name="name" placeholder="Product Name" className="form-control" autoComplete="off" />
                                     </div>
                                     <span style={{ color: "red" }}><ErrorMessage name="name" /></span>
                                 </div>
@@ -64,7 +65,12 @@ const Addproduct = () => {
                                     <span style={{ color: "red" }}><ErrorMessage name="price" /></span>
                                 </div>
 
-                                
+                                <div className="form-group">
+                                    <div className="input-group">
+                                        <input id="productImage" name="productImage" type="file" className="form-control" />
+                                    </div>
+                                    </div>
+
                                 <div className="form-actions form-group float-right">
                                     <button type="submit" className="btn btn-success btn-sm">Submit</button>
                                 </div>
