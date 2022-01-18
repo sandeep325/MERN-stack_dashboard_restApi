@@ -10,7 +10,7 @@ const Addproduct = () => {
     const formInitialschema = {
         name: '',
         price: '',
-        productImage:'',
+        // productImage: '',
 
     }
     const validate = Yup.object({
@@ -21,7 +21,7 @@ const Addproduct = () => {
 
     const formHandelingFun = (value) => {
         const params = value;
-        //    console.log(params); return false;
+        // console.log(params); return false;
         async function addNewproduct() {
             const response = await axios.post(`http://localhost:8080/products/addproducts`, params);
             if (response.data.status === 200) {
@@ -65,11 +65,13 @@ const Addproduct = () => {
                                     <span style={{ color: "red" }}><ErrorMessage name="price" /></span>
                                 </div>
 
-                                <div className="form-group">
+                                {/* <div className="form-group">
                                     <div className="input-group">
-                                        <input id="productImage" name="productImage" type="file" className="form-control" />
+                                        <Field  type="file" name="productImage" />
+                                        <input id="file" name="file" type="file" accept="image/*"/>
+                                        
                                     </div>
-                                    </div>
+                                </div> */}
 
                                 <div className="form-actions form-group float-right">
                                     <button type="submit" className="btn btn-success btn-sm">Submit</button>

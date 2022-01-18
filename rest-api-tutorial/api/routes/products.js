@@ -3,30 +3,41 @@ const router = express.Router();
 const mongoose = require("mongoose");
 // const product = require("../models/product");
 const Product = require("../models/product");
-const multer = require("multer");
+
+// ===========================this for images upload=============================================
 
 
-const fileFilter = (req,file,cb) => {
+// const multer = require("multer");
+// const fileFilter = (req, file, cb) => {
 
-    if(file.mimetype==='image/jpeg' || file.mimetype ==='image/png') {
-          cb(null,true);
-    } else {
-        cb(null,false);
-    }
-}
-const storage = multer.diskStorage({
+//     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+//         cb(null, true);
+//     } else {
+//         cb(null, false);
+//     }
+// }
+// const storage = multer.diskStorage({
 
-    destination:function(req,file,cb){ cb(null, './product_images/');  },
-    filename:function(req,file,cb) { cb(null, new Date().toISOString()+'product'+file.originalname );  }
-});
-// const upload = multer({dest:'product_images/'});
-const upload = multer({
-    storage:storage, 
-    limits:{
-   fileSize:1024*1024*5
-    },
-    fileFilter:fileFilter,
-});
+//     destination: function (req, file, cb) { cb(null, './product_images/'); },
+//     filename: function (req, file, cb) { cb(null, new Date().toISOString() + 'product' + file.originalname); }
+// });
+// // const upload = multer({dest:'product_images/'});
+// const upload = multer({
+//     storage: storage,
+//     limits: {
+//         fileSize: 1024 * 1024 * 5
+//     },
+//     fileFilter: fileFilter,
+// });
+
+
+// ===========================this for images upload  end=============================================
+
+
+
+
+
+
 // ===========================================PRODUCT  ALL Listing REST-API  START=========================================================================
 router.get("/", (req, res, next) => {
 
@@ -40,7 +51,7 @@ router.get("/", (req, res, next) => {
                     _id: data._id,
                     name: data.name,
                     price: data.price,
-                    productImage:data.productImage,
+                    productImage: data.productImage,
                     request: {
                         type: 'GET',
                         url: `http://localhost:8080/products/${data._id}`
@@ -68,20 +79,20 @@ router.get("/:productId", (req, res, next) => {
     const id = req.params.productId;
     if (id) {
 
-        Product.findById(id).select("name price _id productImage ").exec().then(dat => {
+        Product.findById(id).select("name price _id ").exec().then(dat => {
             if (dat) {
                 // console.log('data from database',dat);
                 res.status(200).json({
                     countproduct: dat.length,
                     status: 200,
-                    message:`Product get by id :${id}`,
+                    message: `Product get by id :${id}`,
                     products: {
                         _id: dat._id,
-                        name:dat.name,
-                        price:dat.price,
+                        name: dat.name,
+                        price: dat.price,
                         productImage: dat.productImage,
-                        request:{
-                            type:'GET',
+                        request: {
+                            type: 'GET',
                             url: `http://localhost:8080/products`
                         }
                     }
@@ -89,7 +100,7 @@ router.get("/:productId", (req, res, next) => {
 
             } else {
 
-                res.status(404).json({ message: `No data found for id :${id}` });
+                res.status(404).json({ status:404,message: `No data found for id :${id}` });
 
             }
 
@@ -109,14 +120,15 @@ router.get("/:productId", (req, res, next) => {
 
 // ===========================================PRODUCT ADD RESTAPI  START=========================================================================
 
-router.post("/addproducts", upload.single('productImage') ,(req, res, next) => {
+router.post("/addproducts",  (req, res, next) => {
     // const product =  req.body;
     // console.log(req.file);
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         price: req.body.price,
-        productImage:req.file.path,
+
+        // productImage: req.file.path,
     });
     product.save().then(result => {
         res.status(201).json({
@@ -154,21 +166,22 @@ router.delete("/delete-products/:ProductId", (req, res, next) => {
     Product.deleteOne({ _id: id }).exec().then(dat => {
         console.log(dat);
         if (dat.deletedCount === 1) {
-            res.status(200).json({ 
-                status:200,
-                deletedCount:dat.deletedCount,
+            res.status(200).json({
+                status: 200,
+                deletedCount: dat.deletedCount,
                 message: 'Product deleted successfully...',
             });
 
         }
         else {
+           return res.status(200).json({
+                status: 204,
+                deletedCount: dat.deletedCount,
+                message: 'Product Not Found on db.',
+            });
 
         }
-        res.status(200).json({
-            status:404,
-            deletedCount:dat.deletedCount,
-            message:'Product Not Found on db.',
-         });
+        
     })
         .catch(err => {
             console.log(err);
@@ -201,8 +214,8 @@ router.put("/update-product/:productId", (req, res, next) => {
                 // console.log(result);
 
                 res.status(200).json({
-                    status:200,
-                    modifiedCount:result.modifiedCount,
+                    status: 200,
+                    modifiedCount: result.modifiedCount,
                     message: 'Product updated successfully...',
                     products: {
                         _id: id,
@@ -216,17 +229,17 @@ router.put("/update-product/:productId", (req, res, next) => {
             } else {
                 console.log(result);
                 res.status(200).json({
-                    status:400,
-                    modifiedCount:result.modifiedCount,
-                    message: 'Product Could not update...', 
+                    status: 204,
+                    modifiedCount: result.modifiedCount,
+                    message: 'Product Could not update...',
                     products: {
                         _id: id,
                         request: {
                             type: 'GET',
                             url: `http://localhost:8080/products/${id}`
-                        } 
-                    }, 
-                    });
+                        }
+                    },
+                });
             }
 
         })
