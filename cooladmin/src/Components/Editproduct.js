@@ -13,7 +13,7 @@ const Editproduct = () => {
 
     useEffect(() => {
         async function getProductByID() {
-            const response = await axios.get(`http://localhost:8080/products/${id}`);
+            const response = await axios.get(`http://localhost:8080/products/${id}`,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
             //   console.log(response.data);
             if (response.data.status === 200) {
                 //   console.log(response.data.products);
@@ -53,7 +53,7 @@ const Editproduct = () => {
         ];
          async function editProductData() {
                
-          const  response = await axios.put(process.env.REACT_APP_API_SERVER_PORT+`products/update-product/${id}`,param); 
+          const  response = await axios.put(process.env.REACT_APP_API_SERVER_PORT+`products/update-product/${id}`,param,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } }); 
         // console.log(response.data);
         if(response.data.status === 200) {
             toast.success('Product Update  Successfully.' , {autoClose:9000})

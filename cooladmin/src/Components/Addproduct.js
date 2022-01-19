@@ -23,7 +23,7 @@ const Addproduct = () => {
         const params = value;
         // console.log(params); return false;
         async function addNewproduct() {
-            const response = await axios.post(process.env.REACT_APP_API_SERVER_PORT+`products/addproducts`, params);
+            const response = await axios.post(process.env.REACT_APP_API_SERVER_PORT+`products/addproducts`, params ,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
             if (response.data.status === 200) {
                 console.log(response.data);
                 toast.success('New  Product Added Successfully.', { autoClose: 9000 })

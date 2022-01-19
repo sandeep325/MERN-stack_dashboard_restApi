@@ -26,8 +26,7 @@ const Dashboard = () => {
    useEffect( () => {
           
     async function getProduct() {
-
-        const response = await axios.get('http://localhost:8080/products');
+        const response = await axios.get('http://localhost:8080/products',{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
         console.log(response.data);
         if(response.data.status === 200) {
             setProducts(response.data.countproduct);

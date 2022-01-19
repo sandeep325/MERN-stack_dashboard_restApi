@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 // const product = require("../models/product");
 const Product = require("../models/product");
-
+const checkUserAuth = require("../middleware/Auth");
 const multer = require('multer');
 const upload = multer();
 // ===========================this for images upload=============================================
@@ -41,7 +41,7 @@ const upload = multer();
 
 
 // ===========================================PRODUCT  ALL Listing REST-API  START=========================================================================
-router.get("/", (req, res, next) => {
+router.get("/",  checkUserAuth, upload.none(),  (req, res, next) => {
 
     Product.find().select("name price _id productImage").sort({ _id: -1 }).exec().then(docs => {
         //    console.log(doc);
@@ -77,7 +77,7 @@ router.get("/", (req, res, next) => {
 
 // ===========================================PRODUCT  DETAIL BYID RESTAPI  START=========================================================================
 
-router.get("/:productId", (req, res, next) => {
+router.get("/:productId", checkUserAuth, upload.none(), (req, res, next) => {
     const id = req.params.productId;
     if (id) {
 
@@ -122,7 +122,7 @@ router.get("/:productId", (req, res, next) => {
 
 // ===========================================PRODUCT ADD RESTAPI  START=========================================================================
 
-router.post("/addproducts",  (req, res, next) => {
+router.post("/addproducts",checkUserAuth, upload.none(), (req, res, next) => {
     // const product =  req.body;
     // console.log(req.file);
     const product = new Product({
@@ -160,7 +160,7 @@ router.post("/addproducts",  (req, res, next) => {
 
 // ===========================================PRODUCT  DELETE REST-API  START=========================================================================
 
-router.delete("/delete-products/:ProductId", (req, res, next) => {
+router.delete("/delete-products/:ProductId", checkUserAuth, upload.none(), (req, res, next) => {
     //    const id = req.body.id;
     const id = req.params.ProductId;
     //    res.status(200).json({id:id}); return false;
@@ -199,7 +199,7 @@ router.delete("/delete-products/:ProductId", (req, res, next) => {
 
 
 // ===========================================PRODUCT  UPDATE REST-API  END=========================================================================
-router.put("/update-product/:productId", (req, res, next) => {
+router.put("/update-product/:productId", checkUserAuth, upload.none(), (req, res, next) => {
 
     const id = req.params.productId;
     // res.status(200).json(req.body); return false;
@@ -233,7 +233,7 @@ router.put("/update-product/:productId", (req, res, next) => {
                 res.status(200).json({
                     status: 204,
                     modifiedCount: result.modifiedCount,
-                    message: 'Product Could not update...',
+                    message: 'Product already updated...',
                     products: {
                         _id: id,
                         request: {

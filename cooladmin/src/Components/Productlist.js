@@ -12,9 +12,12 @@ const ProductList = () => {
     useEffect( () => {
            
      async function getProduct() {
- 
-         const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT+"products");
-        //  console.log(response.data.status);
+                //       const params = {  
+                //  token:process.env.REACT_APP_API_TOKEN
+                //       } ;
+                const token = process.env.REACT_APP_API_TOKEN;
+         const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT+"products" ,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
+         console.log(response);
          if(response.data.status === 200) {
         //  console.log(response.data.products);
          const productList = response.data.products;
@@ -34,9 +37,9 @@ const ProductList = () => {
           )
           if (confirmBox === true) {
             async function delCustomer() {
-                const response = await axios.delete(process.env.REACT_APP_API_SERVER_PORT+`products/delete-products/${id}`);
+                const response = await axios.delete(process.env.REACT_APP_API_SERVER_PORT+`products/delete-products/${id}`,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
                 if(response.data.status === 200) {
-                    const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT+'products');
+                    const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT+'products',{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
                     // console.log(response.data);
                     if(response.data.status === 200) {
                     // console.log(response.data.products);
