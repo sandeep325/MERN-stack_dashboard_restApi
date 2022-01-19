@@ -55,7 +55,7 @@ const Editorder = () => {
         ];
         // console.log(param);
         async function updateOrder() {
-            const response = await axios.put(`http://localhost:8080/orders/update-orders/${id}`,param);
+            const response = await axios.put(process.env.REACT_APP_API_SERVER_PORT+`orders/update-orders/${id}`,param);
             if(response.data.status === 200) {
                 toast.success(response.data.message , {autoClose:9000})
     

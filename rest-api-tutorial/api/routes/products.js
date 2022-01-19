@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 // const product = require("../models/product");
 const Product = require("../models/product");
 
+const multer = require('multer');
+const upload = multer();
 // ===========================this for images upload=============================================
 
 

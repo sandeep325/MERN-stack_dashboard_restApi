@@ -29,7 +29,7 @@ const Addorder = () => {
           quantity:values.quantity,
          }
          async function postOrder() {
-        const response =   await axios.post('http://localhost:8080/orders/addorders',params); 
+        const response =   await axios.post(process.env.REACT_APP_API_SERVER_PORT+'orders/addorders',params); 
         console.log(response.data);
         if(response.data.status===201) {
             toast.success(response.data.message , {autoClose:9000});

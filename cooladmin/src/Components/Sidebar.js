@@ -7,7 +7,8 @@ const Sidebar = () => {
             <aside className="menu-sidebar d-none d-lg-block">
                 <div className="logo">
                     <Link to="/">
-                        <img src="images/icon/logo.png" alt="Cool Admin" />
+                        {/* <img src="images/icon/logo.png" alt="Cool Admin" /> */}
+                        <h3>{process.env.REACT_APP_MY_PROJECT_LOGO_NAME} </h3>
                     </Link>
                 </div>
                 <div className="menu-sidebar__content js-scrollbar1">
@@ -15,7 +16,7 @@ const Sidebar = () => {
                         <ul className="list-unstyled navbar__list">
                             <li className="active has-sub">
                                 <Link className="js-arrow" to="">
-                                    <i className="fas fa-tachometer-alt"></i>Dashboard </Link>
+                                    <i className="fas fa-tachometer-alt"></i>Dashboard  </Link>
 
                             </li>
                             <li>

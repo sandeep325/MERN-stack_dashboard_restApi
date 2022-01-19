@@ -53,7 +53,7 @@ const Editproduct = () => {
         ];
          async function editProductData() {
                
-          const  response = await axios.put(`http://localhost:8080/products/update-product/${id}`,param); 
+          const  response = await axios.put(process.env.REACT_APP_API_SERVER_PORT+`products/update-product/${id}`,param); 
         // console.log(response.data);
         if(response.data.status === 200) {
             toast.success('Product Update  Successfully.' , {autoClose:9000})
