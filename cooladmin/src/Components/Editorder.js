@@ -15,7 +15,7 @@ const Editorder = () => {
     useEffect( ()=>{
         async function getOrderById() {
 
-            const response = await axios.get(`http://localhost:8080/orders/${id}`);
+            const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT+`orders/${id}`,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
             //   console.log(response.data);
             if (response.data.status === 200) {
                 setOrder(response.data.order);
@@ -55,7 +55,7 @@ const Editorder = () => {
         ];
         // console.log(param);
         async function updateOrder() {
-            const response = await axios.put(process.env.REACT_APP_API_SERVER_PORT+`orders/update-orders/${id}`,param);
+            const response = await axios.put(process.env.REACT_APP_API_SERVER_PORT+`orders/update-orders/${id}`,param ,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
             if(response.data.status === 200) {
                 toast.success(response.data.message , {autoClose:9000})
     

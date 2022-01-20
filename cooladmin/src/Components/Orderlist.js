@@ -11,7 +11,7 @@ const Orderlist = () => {
     // ================FETCH ALL ORDER API CALL==============================
     useEffect(() => {
         async function getOrderList() {
-            const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT+'orders/');
+            const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT+'orders/',{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
             // console.log(response.data);
             if (response.data.status === 200) {
                 // const orderArrCount = response.data.countOrder;
@@ -34,11 +34,11 @@ const Orderlist = () => {
        if(conDelBox === true) {
             //  alert(id);
        async function deleteOrder() {
-                const response =  await axios.delete(process.env.REACT_APP_API_SERVER_PORT+`orders/delete-orders/${id}`);
+                const response =  await axios.delete(process.env.REACT_APP_API_SERVER_PORT+`orders/delete-orders/${id}`,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
                 console.log(response.data.status);
                 if(response.data.status===200 && response.data.deletedCount===1 ) {
                     
-                  const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT+'orders/');
+                  const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT+'orders/',{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
                   if (response.data.status === 200) {
                     setOrders(response.data.orders);
                 } 
