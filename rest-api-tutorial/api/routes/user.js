@@ -8,15 +8,18 @@ const jwt = require("jsonwebtoken");
 
 const multer = require('multer');
 const upload = multer();
+
+
 // ==================================REST API FOR USER SIGNUP START===================================================
-router.post('/signup', (req, res, next) => {
+router.post('/signup', upload.none(), (req, res, next) => {
     // res.send("hello user");
     // check if mail is exist
+    // console.log(req.body); return false;
     User.find({ email: req.body.email })
         .exec()
         .then(getdocForEmail => {
             if (getdocForEmail.length > 0) {
-                return res.status(409).json({ status: 409, message: "Email already exist try another." });
+                return res.status(200).json({ status: 409, message: "Email already exist try another." });
             } else {
                 // hash password first then save data
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
@@ -40,8 +43,8 @@ router.post('/signup', (req, res, next) => {
                             console.log(result);
                             res.status(201).json({
                                 status: 201,
+                                message: "You are register successfully...",
                                 id: result._id,
-                                message: "User created successfully...",
                                 // data: {
 
                                 // }
