@@ -96,7 +96,8 @@ router.post("/userlogin", upload.none(), (req, res, next) => {
                         email: userdata[0].email,
                         userId: userdata[0]._id,
                     },process.env.JWT_KEY,
-                        { expiresIn: "1h" }
+                        // { expiresIn: "1h" }
+                        { expiresIn: "30d" }
                     );
                     // END JWT TOKEN 
 

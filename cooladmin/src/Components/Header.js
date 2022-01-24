@@ -15,6 +15,25 @@ const Header = () => {
     },[]);
 
 
+    //=============== user  logout=============== 
+  function logoutAction() {
+    // alert("test");
+    const confirmation =  window.confirm("Do you want to logout ?");
+    if(confirmation === true) {
+        localStorage.removeItem('_id');
+        localStorage.removeItem('name');
+        localStorage.removeItem('email');
+        localStorage.removeItem('token');
+        history.push('/');
+
+    } else {
+        return false;
+
+    }
+      
+  } 
+    //=============== user  logout end=============== 
+
     return (
     <React.Fragment>
         <header class="header-desktop">
@@ -38,7 +57,10 @@ const Header = () => {
                                             <img src="images/icon/avatar-01.jpg" alt="John Doe" />
                                         </div>
                                         <div class="content">
-                                            <Link class="js-acc-btn" to="">{userAuthData_NAME}</Link>
+                                            {/* <h5 onClick={logoutAction()}>LOGOUT</h5> */}
+                                            <h4 onClick={(e) => logoutAction()} class="fa fa-power-off"  style={{color:"green",fontSize:"20px"}}></h4><br/>
+                                            
+                                            <Link class="js-acc-btn" to="" >{userAuthData_NAME}</Link>
                                             
                                         </div>
                                         <div class="account-dropdown js-dropdown">
