@@ -1,19 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { toast,ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
 
 const Editproduct = () => {
 
+    const history = useHistory();
+    useEffect(() => {
+        const userAuthData_ID = localStorage.getItem("_id");
+        if (userAuthData_ID == null || userAuthData_ID == '') {
+            history.push('/');
+        }
+
+    }, []);
+
     const { id } = useParams();
     const [productD, setproductD] = useState([]);
 
     useEffect(() => {
+        const userAuthData_Token = localStorage.getItem("token");
         async function getProductByID() {
-            const response = await axios.get(`http://localhost:8080/products/${id}`,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
+            const response = await axios.get(`${process.env.REACT_APP_API_SERVER_PORT}products/${id}`, { headers: { "authorization": `Bearer ${userAuthData_Token}` } });
             //   console.log(response.data);
             if (response.data.status === 200) {
                 //   console.log(response.data.products);
@@ -28,7 +38,7 @@ const Editproduct = () => {
         }
         getProductByID();
 
-    },[]);
+    }, []);
 
 
 
@@ -46,28 +56,32 @@ const Editproduct = () => {
     })
 
     const formSubmitAction = (values) => {
-        console.log(values);
+        // console.log(values);
         const param = [
-            { "propName":"name", "value":values.name},
-            { "propName":"price", "value":values.price},
+            { "propName": "name", "value": values.name },
+            { "propName": "price", "value": values.price },
         ];
-         async function editProductData() {
-               
-          const  response = await axios.put(process.env.REACT_APP_API_SERVER_PORT+`products/update-product/${id}`,param,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } }); 
-        // console.log(response.data);
-        if(response.data.status === 200) {
-            toast.success('Product Update  Successfully.' , {autoClose:9000})
+        async function editProductData() {
+            const userAuthData_Token = localStorage.getItem("token");
+            try {
+                const response = await axios.put(process.env.REACT_APP_API_SERVER_PORT + `products/update-product/${id}`, param, { headers: { "authorization": `Bearer ${userAuthData_Token}` } });
+                if (response.data.status === 200) {
+                    toast.success('Product Update  Successfully.', { autoClose: 9000 })
 
-        }  else {
-            toast.warning(response.data.message , {autoClose:9000})
-            return false;
-        console.log(response.data);
-                  
-        }
-        
+                }
+
+            } catch (error) {
+                //  console.log(error.response);
+                if (error.response.data.status === 401 ||error.response.data.status === 409 ) {
+                    toast.warning(error.response.data.message, { autoClose: 9000 })
+
+                }
+
+            }
+
         }
 
-         editProductData();
+        editProductData();
 
     }
     return (
@@ -75,10 +89,10 @@ const Editproduct = () => {
             <div className="col-lg-12">
 
                 <div className="card">
-                    <ToastContainer style = {{marginTop:"10%", zIndex:999}} />   
-                    <div className="card-header text-center">Edit Product <span style={{color:"blue"}}>{pname}</span></div>
+                    <ToastContainer style={{ marginTop: "10%", zIndex: 999 }} />
+                    <div className="card-header text-center">Edit Product <span style={{ color: "blue" }}>{pname}</span></div>
                     <div className="card-body card-block">
-                        <Formik enableReinitialize={true}  initialValues={initialData} onSubmit={value => { formSubmitAction(value) }} validationSchema={validateData}>
+                        <Formik enableReinitialize={true} initialValues={initialData} onSubmit={value => { formSubmitAction(value) }} validationSchema={validateData}>
                             <Form action="" method="post" className="" >
 
                                 <div className="form-group">

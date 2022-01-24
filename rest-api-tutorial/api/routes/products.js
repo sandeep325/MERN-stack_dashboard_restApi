@@ -135,7 +135,7 @@ router.post("/addproducts",checkUserAuth, upload.none(), (req, res, next) => {
     product.save().then(result => {
         res.status(201).json({
             message: 'Product successfully Added...',
-            status: 200,
+            status: 201,
             product: {
                 _id: result._id,
                 name: result.name,
@@ -176,7 +176,7 @@ router.delete("/delete-products/:ProductId", checkUserAuth, upload.none(), (req,
 
         }
         else {
-           return res.status(200).json({
+           return res.status(409).json({
                 status: 204,
                 deletedCount: dat.deletedCount,
                 message: 'Product Not Found on db.',
@@ -230,8 +230,8 @@ router.put("/update-product/:productId", checkUserAuth, upload.none(), (req, res
 
             } else {
                 console.log(result);
-                res.status(200).json({
-                    status: 204,
+                res.status(409).json({
+                    status: 409,
                     modifiedCount: result.modifiedCount,
                     message: 'Product already updated...',
                     products: {

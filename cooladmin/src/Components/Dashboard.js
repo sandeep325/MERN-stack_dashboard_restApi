@@ -1,16 +1,30 @@
 import axios from "axios";
 import React , {useState,useEffect} from "react";
 // import React from "react";
+import {useHistory } from "react-router-dom";
 
 const Dashboard = () => {
+
+
+    const history = useHistory();
+    useEffect(() => {
+        const userAuthData_ID = localStorage.getItem("_id");
+        if (userAuthData_ID==null ||userAuthData_ID=='') {
+            history.push('/');
+        }
+
+    }
+
+        );
+
      const [Countorders , setCountorders]  = useState();
      const [Products , setProducts]  = useState();
    useEffect( () => {
-          
+        const userAuthData_Token = localStorage.getItem("token");          
     async function getOrders() {
 
-        const response = await axios.get('http://localhost:8080/orders/');
-        console.log(response.data);
+        const response = await axios.get(`${process.env.REACT_APP_API_SERVER_PORT}orders/`,{headers: {"authorization" : `Bearer ${userAuthData_Token}` } });
+        // console.log(response.data);
         if(response.data.status === 200) {
         setCountorders(response.data.countOrder);
         }
@@ -24,10 +38,11 @@ const Dashboard = () => {
 
 
    useEffect( () => {
+        const userAuthData_Token = localStorage.getItem("token");
           
     async function getProduct() {
-        const response = await axios.get('http://localhost:8080/products',{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
-        console.log(response.data);
+        const response = await axios.get(`${process.env.REACT_APP_API_SERVER_PORT}products`,{headers: {"authorization" : `Bearer ${userAuthData_Token}` } });
+        // console.log(response.data);
         if(response.data.status === 200) {
             setProducts(response.data.countproduct);
         }

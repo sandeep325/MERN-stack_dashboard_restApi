@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import axios from "axios";
-
+import { Link, useHistory } from "react-router-dom";
 const Addorder = () => {
+
+    const history = useHistory();
+    useEffect(() => {
+        const userAuthData_ID = localStorage.getItem("_id");
+        if (userAuthData_ID == null || userAuthData_ID == '') {
+            history.push('/');
+        }
+
+    }, []);
 
     const initialValuesOfOrder = {
         name: '',
@@ -16,30 +25,44 @@ const Addorder = () => {
     const validateOrderSchema = Yup.object({
         name: Yup.string().max(50, 'Must be 50 charecter or less.').required("Customer name must be required."),
         product: Yup.string().required("Product can not be NULL."),
-        quantity:Yup.number().required("Please select atleast one."),
+        quantity: Yup.number().required("Please select atleast one."),
 
     })
 
-// ======================CALL POST API FOR ADD ORDER ===================================================
-  const  orderhendlerAction = (values) => {
+    // ======================CALL POST API FOR ADD ORDER ===================================================
+    const orderhendlerAction = (values) => {
         // console.log(values);
-       const   params = {
-          name: values.name,
-          productId:values.product,
-          quantity:values.quantity,
-         }
-         async function postOrder() {
-        const response =   await axios.post(process.env.REACT_APP_API_SERVER_PORT+'orders/addorders',params,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } }); 
-        console.log(response.data);
-        if(response.data.status===201) {
-            toast.success(response.data.message , {autoClose:9000});
-             
-        } else {
-            console.log(response); return false;
+        const params = {
+            name: values.name,
+            productId: values.product,
+            quantity: values.quantity,
         }
-         }
-         postOrder();
-        
+        async function postOrder() {
+            try {
+                const userAuthData_Token = localStorage.getItem("token");
+                const response = await axios.post(process.env.REACT_APP_API_SERVER_PORT + 'orders/addorders', params, { headers: { "authorization": `Bearer ${userAuthData_Token}` } });
+                if (response.data.status === 201) {
+                    console.log(response.data);
+                    toast.success(response.data.message, { autoClose: 9000 })
+    
+                } else {
+                    console.log(response.error);
+                }
+            } catch (error) {
+                console.log(error.response); return false;
+
+            }
+            //     const userAuthData_Token = localStorage.getItem("token");
+            // const response =   await axios.post(process.env.REACT_APP_API_SERVER_PORT+'orders/addorders',params,{headers: {"authorization" : `Bearer ${userAuthData_Token}` } }); 
+            // if(response.data.status===201) {
+            //     toast.success(response.data.message , {autoClose:9000});
+
+            // } else {
+            //     console.log(response); return false;
+            // }
+        }
+        postOrder();
+
     }
 
 
@@ -49,7 +72,7 @@ const Addorder = () => {
             <div className="col-lg-12">
 
                 <div className="card">
-                    <ToastContainer style = {{marginTop:"10%", zIndex:999}} />   
+                    <ToastContainer style={{ marginTop: "10%", zIndex: 999 }} />
                     <div className="card-header text-center">Order Now </div>
                     <div className="card-body card-block">
                         <Formik enableReinitialize={true} initialValues={initialValuesOfOrder} onSubmit={value => { orderhendlerAction(value) }} validationSchema={validateOrderSchema} >
@@ -75,8 +98,8 @@ const Addorder = () => {
                                     <label>Quantity :</label>
                                     <div className="input-group">
                                         <Field as="select" name="quantity" className="form-control">
-                                        <option value="" >--select quantity--</option>
-                                        <option value="1">1</option>
+                                            <option value="" >--select quantity--</option>
+                                            <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
                                             <option value="4">4</option>

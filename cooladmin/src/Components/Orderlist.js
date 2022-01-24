@@ -1,25 +1,45 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { toast,ToastContainer } from "react-toastify";
+import { Link, useHistory } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 const Orderlist = () => {
+
+    const history = useHistory();
+    useEffect(() => {
+        const userAuthData_ID = localStorage.getItem("_id");
+        if (userAuthData_ID == null || userAuthData_ID == '') {
+            history.push('/');
+        }
+
+    }, []);
 
     const [Orders, setOrders] = useState([]);
 
     // ================FETCH ALL ORDER API CALL==============================
     useEffect(() => {
         async function getOrderList() {
-            const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT+'orders/',{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
-            // console.log(response.data);
-            if (response.data.status === 200) {
-                // const orderArrCount = response.data.countOrder;
-                console.log(response.data.orders);
-                setOrders(response.data.orders);
-            } else {
-                console.log(response.data);
+            const userAuthData_Token = localStorage.getItem("token");
+            try {
+
+                const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT + 'orders/', { headers: { "authorization": `Bearer ${userAuthData_Token}` } });
+                // console.log(response.data);
+                if (response.data.status === 200) {
+                    // const orderArrCount = response.data.countOrder;
+                    console.log(response.data.orders);
+                    setOrders(response.data.orders);
+                } else {
+                    console.log(response.data);
+                }
+
+
+            } catch (error) {
+                console.log(error.response);
+
             }
+
+
 
         }
         getOrderList();
@@ -30,27 +50,39 @@ const Orderlist = () => {
     // ========================DELETE ORDER API  CALL  =======================================
     const deleteOrder = (id) => {
         // alert(id);
-      const   conDelBox = window.confirm("Do you want delete this order ?");
-       if(conDelBox === true) {
+        const userAuthData_Token = localStorage.getItem("token");
+        const conDelBox = window.confirm("Do you want delete this order ?");
+        if (conDelBox === true) {
             //  alert(id);
-       async function deleteOrder() {
-                const response =  await axios.delete(process.env.REACT_APP_API_SERVER_PORT+`orders/delete-orders/${id}`,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
-                console.log(response.data.status);
-                if(response.data.status===200 && response.data.deletedCount===1 ) {
-                    
-                  const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT+'orders/',{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
-                  if (response.data.status === 200) {
-                    setOrders(response.data.orders);
-                } 
-                  toast.error('Order deleted Successfully.' ,{position: toast.POSITION.TOP_CENTER} ,{autoClose:9000})
+            async function deleteOrder() {
 
-                } else {  return false; }
-       }
-       deleteOrder();
+                try { 
 
-       }  else {
-           return false;
-       }
+                    const response = await axios.delete(process.env.REACT_APP_API_SERVER_PORT + `orders/delete-orders/${id}`, { headers: { "authorization": `Bearer ${userAuthData_Token}` } });
+                    console.log(response.data.status);
+                    if (response.data.status === 200 && response.data.deletedCount === 1) {
+    
+                        const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT + 'orders/', { headers: { "authorization": `Bearer ${userAuthData_Token}` } });
+                        if (response.data.status === 200) {
+                            setOrders(response.data.orders);
+                        }
+                        toast.error('Order deleted Successfully.', { position: toast.POSITION.TOP_CENTER }, { autoClose: 9000 })
+    
+                    } else { return false; }
+
+
+                } catch(error){  
+                    console.log(error.response);
+                    toast.error(error.response.message, { position: toast.POSITION.TOP_CENTER }, { autoClose: 9000 })
+
+                }
+
+            }
+            deleteOrder();
+
+        } else {
+            return false;
+        }
 
     }
 
@@ -60,7 +92,7 @@ const Orderlist = () => {
 
             <div className="row">
                 <div className="col-lg-12">
-                    <ToastContainer style = {{marginTop:"10%", zIndex:999}} />  
+                    <ToastContainer style={{ marginTop: "10%", zIndex: 999 }} />
                     <div className="overview-wrap float-right">
                         <Link to="/addorder" className="btn btn-info btn-md">
                             <i className="zmdi zmdi-plus"></i>Order Now</Link>
@@ -98,7 +130,7 @@ const Orderlist = () => {
                                         </button>
                                         </td>
                                         <td>
-                                            <Link to={"editorder/"+OrderData._id} className="btn btn-info btn-sm">
+                                            <Link to={"editorder/" + OrderData._id} className="btn btn-info btn-sm">
                                                 <i className="fa fa-pencil-square-o"></i>edit</Link>
                                         </td>
                                         <td><button type="button" className="btn btn-danger btn-sm" onClick={(e) => deleteOrder(OrderData._id)} >

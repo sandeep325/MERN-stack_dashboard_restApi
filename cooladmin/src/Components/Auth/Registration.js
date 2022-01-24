@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -7,6 +7,16 @@ import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 const Registration = () => {
     const history = useHistory();
+
+
+    useEffect(() => {
+        const userAuthData_ID = localStorage.getItem("_id");
+        if (userAuthData_ID) {
+            history.push('/dashboard');
+        }
+
+    },[]);
+
     const InitialValuesReg = {
         name: '',
         email: '',
@@ -23,7 +33,7 @@ const Registration = () => {
 
     });
 
-    // form submition action here 
+    // ===========================form submition action here =========================================
 
     const formHandlingAction = (value) => {
         // console.log(value);
@@ -41,26 +51,26 @@ const Registration = () => {
 
         async function signupAction() {
 
-            const response = await axios.post(`${process.env.REACT_APP_API_SERVER_PORT}user/signup`, params);
-            console.log(response);
-            if (response.data.status === 201) {
-                toast.success(response.data.message, { autoClose: 9000, position: toast.POSITION.TOP_CENTER });
-                // setTimeout(() => history.push('/'), 1300)
-                // history.push('/');
+            try {
+                const response = await axios.post(`${process.env.REACT_APP_API_SERVER_PORT}user/signup`, params);
+                if (response.data.status === 201) {
+                    toast.success(response.data.message, { autoClose: 9000, position: toast.POSITION.TOP_CENTER });
+                    // setTimeout(() => history.push('/'), 1300)
+                    // history.push('/');
 
-                return delay(1800).then(function () {
-                    history.push('/')
-                });
+                    return delay(1800).then(function () {
+                        history.push('/')
+                    });
 
-            }
-            if (response.data.status === 409) {
-                toast.warning(response.data.message, { autoClose: 9000, position: toast.POSITION.TOP_CENTER });
-                // setTimeout(() => history.push('/'), 1300)
-                // history.push('/');
+                }
 
-                // return delay(1800).then(function() {
-                //     history.push('/')
-                //   });
+
+            } catch (error) {
+
+                if (error.response.data.status === 409) {
+                    toast.warning(error.response.data.message, { autoClose: 9000, position: toast.POSITION.TOP_CENTER });
+
+                }
 
             }
 
@@ -102,7 +112,7 @@ const Registration = () => {
                                             <div className="form-group">
                                                 <label>Password :</label>
                                                 <div className="input-group">
-                                                    <Field type="password" id="password" name="password" placeholder="Enter your name" className="form-control" autoComplete="off" />
+                                                    <Field type="password" id="password" name="password" placeholder="Create password" className="form-control" autoComplete="off" />
                                                 </div>
                                                 <span style={{ color: "red" }}><ErrorMessage name="password" /></span>
                                             </div>
@@ -110,7 +120,7 @@ const Registration = () => {
                                             <div className="form-group">
                                                 <label> Confirm Password :</label>
                                                 <div className="input-group">
-                                                    <Field type="password" id="conpassword" name="conpassword" placeholder="Enter your name" className="form-control" autoComplete="off" />
+                                                    <Field type="password" id="conpassword" name="conpassword" placeholder="Confirm your password" className="form-control" autoComplete="off" />
                                                 </div>
                                                 <span style={{ color: "red" }}><ErrorMessage name="conpassword" /></span>
                                             </div>

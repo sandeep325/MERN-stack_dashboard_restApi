@@ -1,4 +1,4 @@
-import React from 'react';
+import React  from 'react';
 import { BrowserRouter as Router, Route, Switch , } from 'react-router-dom';
 // import './App.css';
 import Sidebar from './Components/Sidebar';
@@ -14,15 +14,24 @@ import Editorder from './Components/Editorder';
 import PageNotFound from './Components/PageNotFound';
 import Registration from './Components/Auth/Registration';
 import Login from './Components/Auth/Login';
+
 const App = () => {
+  
+  const userAuthData_ID = localStorage.getItem("_id");
+
   return (
+ 
     <React.Fragment>
+      {/* <h3>{userAuthData_ID}</h3> */}
       <Router>
       <Switch>
+      {/* <Route exact path="/" component={Login} children={ <Login setLoginCridential={setLoginCridential} />} /> */}
+     
+     
+     
       <Route exact path="/" component={Login} />
       <Route exact path="/register" component={Registration} />
-      <Route  component={PageNotFound} />
-
+     
         <div className="page-wrapper">
           <div className="page-container">
             <Header />,
@@ -37,15 +46,14 @@ const App = () => {
                     <Route exact path = "/orderlist"   component={Orderlist} />
                     <Route exact path = "/addorder" component={Addorder} />
                     <Route exact path = "/editorder/:id" component={Editorder} />
-                  {/* <Dashboard/>,  */}
 
                 </div>
               </div>
             </div>
-
             <Footer />
           </div>
         </div>
+      {/* <Route path="*" component={PageNotFound} /> */}
         </Switch>
       </Router>
     </React.Fragment>

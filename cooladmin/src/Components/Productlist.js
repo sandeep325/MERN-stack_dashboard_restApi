@@ -1,63 +1,82 @@
-import React , {useState,useEffect}  from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { toast,ToastContainer } from "react-toastify";
+import { Link,useHistory } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 const ProductList = () => {
+    const history = useHistory();
+    useEffect(() => {
+        const userAuthData_ID = localStorage.getItem("_id");
+        if (userAuthData_ID==null ||userAuthData_ID=='') {
+            history.push('/');
+        }
 
-// const Api_Server_Port = "http://localhost:8080/";
+    },[]);
 
-    const [Products , setproducts]  = useState([]);
-    useEffect( () => {
-           
-     async function getProduct() {
-                //       const params = {  
-                //  token:process.env.REACT_APP_API_TOKEN
-                //       } ;
-                const token = process.env.REACT_APP_API_TOKEN;
-         const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT+"products" ,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
-         console.log(response);
-         if(response.data.status === 200) {
-        //  console.log(response.data.products);
-         const productList = response.data.products;
-         setproducts(productList);
- 
-         }
-     } 
-     getProduct();
- 
-    } , [] 
-    
+    const [Products, setproducts] = useState([]);
+    useEffect(() => {
+
+        async function getProduct() {
+
+            const userAuthData_Token = localStorage.getItem("token");          
+
+            const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT + "products", { headers: { "authorization": `Bearer ${userAuthData_Token}` } });
+            // console.log(response);
+            if (response.data.status === 200) {
+                //  console.log(response.data.products);
+                const productList = response.data.products;
+                setproducts(productList);
+
+            }
+        }
+        getProduct();
+
+    }, []
+
     );
 
     function deleteCustomer(id) {
-      var confirmBox =   window.confirm(
+        const userAuthData_Token = localStorage.getItem("token");          
+        var confirmBox = window.confirm(
             "Do you really want to delete this Product ?"
-          )
-          if (confirmBox === true) {
+        )
+        if (confirmBox === true) {
             async function delCustomer() {
-                const response = await axios.delete(process.env.REACT_APP_API_SERVER_PORT+`products/delete-products/${id}`,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
-                if(response.data.status === 200) {
-                    const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT+'products',{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
-                    // console.log(response.data);
-                    if(response.data.status === 200) {
-                    // console.log(response.data.products);
-                    const productList = response.data.products;
-                    setproducts(productList);
-                toast.error('product deleted Successfully.' ,{position: toast.POSITION.TOP_CENTER} ,{autoClose:9000})
+                try {
+                    const response = await axios.delete(process.env.REACT_APP_API_SERVER_PORT + `products/delete-products/${id}`, { headers: { "authorization": `Bearer ${userAuthData_Token}` } });
+                    if (response.data.status === 200) {
+                        const response = await axios.get(process.env.REACT_APP_API_SERVER_PORT + 'products', { headers: { "authorization": `Bearer ${userAuthData_Token}` } });
+                        // console.log(response.data);
+                        if (response.data.status === 200) {
+                            // console.log(response.data.products);
+                            const productList = response.data.products;
+                            setproducts(productList);
+                            toast.error('product deleted Successfully.', { position: toast.POSITION.TOP_CENTER }, { autoClose: 9000 })
+    
+                        }
+    
+                    }
+
+                } catch(error) {
+                   
+                    if(error.response.data.status===204) {
+                        toast.error(error.response.data.message, { position: toast.POSITION.TOP_CENTER }, { autoClose: 9000 })
 
                     }
-              
+
                 }
-            }
-    
+               
+
+
+            }  //function close
+
             delCustomer();
-    
-          } else {
-              return false;
-          }
-    
+
+        } else {
+            return false;
+        }
+
     }
 
     return (
@@ -65,8 +84,8 @@ const ProductList = () => {
 
             <div className="row">
                 <div className="col-lg-12">
-                <ToastContainer style = {{marginTop:"10%", zIndex:999}} />  
-                <div className="overview-wrap float-right">
+                    <ToastContainer style={{ marginTop: "10%", zIndex: 999 }} />
+                    <div className="overview-wrap float-right">
                         <Link to="/addproduct" className="btn btn-info btn-md">
                             <i className="zmdi zmdi-plus"></i>add product</Link>
                     </div>
@@ -74,42 +93,42 @@ const ProductList = () => {
                     <div className="table-responsive table--no-card m-b-40">
                         <table className="table table-borderless table-striped table-earning">
                             <thead>
-                                
-                            <tr>
-                               <th>S.No.</th>
-                               <th>Product ID</th>
-                               <th>Product Name</th>
-                               {/* <th>Product Image</th> */}
-                               <th className="text-right">Product Price</th>
-                               <th>View</th>
-                                <th>Edit</th>
-                                 <th>Delete</th>               
+
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Product ID</th>
+                                    <th>Product Name</th>
+                                    {/* <th>Product Image</th> */}
+                                    <th className="text-right">Product Price</th>
+                                    <th>View</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
                                 </tr>
 
                             </thead>
                             <tbody>
-                             
-                            {Products.map((Product,i) =>( 
-                                <tr>
-                                    <td>{(i++)+1}</td>  
-                                     <td>{Product._id}</td>
-                                     <td>{Product.name}</td>
-                                     {/* <td>{(Product.productImage  ? <img src= {Api_Server_Port+Product.productImage} alt="product image"/> : <span style={{ color: 'red' }}>NULL</span>)}</td> */}
-                                     <td className="text-right">{Product.price}/Rs.</td>
-                                    <td><button type="reset" className="btn btn-warning btn-sm">
-                                    <i className="fa fa-eye"></i> view
+
+                                {Products.map((Product, i) => (
+                                    <tr>
+                                        <td>{(i++) + 1}</td>
+                                        <td>{Product._id}</td>
+                                        <td>{Product.name}</td>
+                                        {/* <td>{(Product.productImage  ? <img src= {Api_Server_Port+Product.productImage} alt="product image"/> : <span style={{ color: 'red' }}>NULL</span>)}</td> */}
+                                        <td className="text-right">{Product.price}/Rs.</td>
+                                        <td><button type="reset" className="btn btn-warning btn-sm">
+                                            <i className="fa fa-eye"></i> view
                                         </button>
                                         </td>
-                                    <td>
-                                        <Link to= {"/editproduct/"+Product._id} params={Product._id}  className="btn btn-info btn-sm">
-                                            <i className="fa fa-pencil-square-o"></i>edit</Link>
-                                            </td>   
-                                    <td><button type="button" className="btn btn-danger btn-sm" onClick={(e)=>deleteCustomer(Product._id)}  >
+                                        <td>
+                                            <Link to={"/editproduct/" + Product._id} params={Product._id} className="btn btn-info btn-sm">
+                                                <i className="fa fa-pencil-square-o"></i>edit</Link>
+                                        </td>
+                                        <td><button type="button" className="btn btn-danger btn-sm" onClick={(e) => deleteCustomer(Product._id)}  >
                                             <i className="fa fa-times-circle-o"></i> delete
                                         </button></td>
-                                </tr>
+                                    </tr>
 
-                               ) )}
+                                ))}
 
                             </tbody>
                         </table>

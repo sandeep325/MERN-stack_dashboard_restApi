@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const multer = require('multer');
+const user = require("../models/user");
 const upload = multer();
 
 
@@ -19,7 +20,7 @@ router.post('/signup', upload.none(), (req, res, next) => {
         .exec()
         .then(getdocForEmail => {
             if (getdocForEmail.length > 0) {
-                return res.status(200).json({ status: 409, message: "Email already exist try another." });
+                return res.status(409).json({ status: 409, message: "Email already exist try another." });
             } else {
                 // hash password first then save data
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
@@ -78,7 +79,7 @@ router.post("/userlogin", upload.none(), (req, res, next) => {
             // res.status(200).json(result);
             // for check user 
             if (userdata.length < 1) {
-                return res.status(401).json({ status: 401, message: "Auth failed (No user exist)." });
+                return res.status(401).json({ status: 401, message: "Invalid email or user." });
 
             }
 
@@ -102,11 +103,16 @@ router.post("/userlogin", upload.none(), (req, res, next) => {
                     return res.status(200).json({
                         status: 200,
                         message: "Auth successfull...",
-                        token: token
+                        data:{
+                            token: token,
+                            _id:userdata[0]._id,
+                            name:userdata[0].name,
+                            email:userdata[0].email
+                        }
                     });
                 }
 
-                res.status(401).json({ status: 401, message: "Auth failed (May be password encurrect)." });
+                res.status(401).json({ status: 401, error: err, message: "May be password mismatch." });
             });  //bcrypt pass comare end
 
 

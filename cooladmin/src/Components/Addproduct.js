@@ -1,11 +1,21 @@
-import React from "react";
+import React,{useEffect} from "react";
 import axios from "axios";
 
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { Link, useHistory } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 const Addproduct = () => {
+
+    const history = useHistory();
+    useEffect(() => {
+        const userAuthData_ID = localStorage.getItem("_id");
+        if (userAuthData_ID == null || userAuthData_ID == '') {
+            history.push('/');
+        }
+
+    }, []);
 
     const formInitialschema = {
         name: '',
@@ -23,14 +33,21 @@ const Addproduct = () => {
         const params = value;
         // console.log(params); return false;
         async function addNewproduct() {
-            const response = await axios.post(process.env.REACT_APP_API_SERVER_PORT+`products/addproducts`, params ,{headers: {"authorization" : `Bearer ${process.env.REACT_APP_API_TOKEN}` } });
-            if (response.data.status === 200) {
+            try{
+                const userAuthData_Token = localStorage.getItem("token");
+                const response = await axios.post(process.env.REACT_APP_API_SERVER_PORT+`products/addproducts`, params ,{headers: {"authorization" : `Bearer ${userAuthData_Token}` } });
+            if (response.data.status === 201) {
                 console.log(response.data);
                 toast.success('New  Product Added Successfully.', { autoClose: 9000 })
 
             } else {
                 console.log(response.error);
             }
+
+            } catch(error) {  
+                console.log(error.response);
+            }
+            
         }
         addNewproduct();
         // toast.success('User add successfully.' , {autoClose:false})

@@ -45,7 +45,7 @@ router.get("/", checkUserAuth, upload.none(),  (req, res, next) => {
 
 
 
-// =======================================GET ORDER DETAIL BYID REST-API END=========================================================
+// =======================================GET ORDER DETAIL BYID REST-API START=========================================================
 router.get("/:orderId", checkUserAuth, upload.none(), (req, res, next) => {
     const id = req.params.orderId;
     Order.findById({ _id: id }).select("_id product name quantity")
@@ -146,7 +146,7 @@ router.delete("/delete-orders/:orderId", checkUserAuth, upload.none(), (req, res
                 });
 
             } else {
-                res.status(200).json({
+                res.status(409).json({
                     status: 204,
                     deletedCount: result.deletedCount,
                     message: 'Your order could not deleted please try again...',
@@ -189,9 +189,9 @@ router.put('/update-orders/:orderId', checkUserAuth, upload.none(), (req, res, n
 
             } else {
 
-                res.status(200).json({
-                    status: 204,
-                    message: 'Your order is not  updated or already updated...',
+                res.status(409).json({
+                    status: 409,
+                    message: 'Your order is  already updated...',
                 });
 
             }

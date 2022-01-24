@@ -1,7 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React ,{useEffect}  from "react";
+import { Link,useHistory } from "react-router-dom";
 
 const Header = () => {
+
+    const history = useHistory();
+    const userAuthData_NAME = localStorage.getItem("name");
+
+    useEffect(() => {
+        const userAuthData_ID = localStorage.getItem("_id");
+        if (userAuthData_ID==null ||userAuthData_ID=='') {
+            history.push('/');
+        }
+
+    },[]);
+
+
     return (
     <React.Fragment>
         <header class="header-desktop">
@@ -25,7 +38,8 @@ const Header = () => {
                                             <img src="images/icon/avatar-01.jpg" alt="John Doe" />
                                         </div>
                                         <div class="content">
-                                            <Link class="js-acc-btn" to="">john doe</Link>
+                                            <Link class="js-acc-btn" to="">{userAuthData_NAME}</Link>
+                                            
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
