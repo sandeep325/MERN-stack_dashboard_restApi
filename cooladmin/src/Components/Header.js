@@ -1,6 +1,6 @@
 import React ,{useEffect}  from "react";
 import { Link,useHistory } from "react-router-dom";
-
+import { confirm } from "react-confirm-box";
 const Header = () => {
 
     const history = useHistory();
@@ -16,10 +16,11 @@ const Header = () => {
 
 
     //=============== user  logout=============== 
-  function logoutAction() {
+    async function  logoutAction() {
     // alert("test");
-    const confirmation =  window.confirm("Do you want to logout ?");
-    if(confirmation === true) {
+    const confirmation =  await confirm("Do you want to logout ?");
+    // alert(confirmation); return false;
+    if(confirmation) {
         localStorage.removeItem('_id');
         localStorage.removeItem('name');
         localStorage.removeItem('email');

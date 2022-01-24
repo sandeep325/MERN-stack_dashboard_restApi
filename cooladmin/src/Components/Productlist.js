@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link,useHistory } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-
+import { confirm } from "react-confirm-box";
 const ProductList = () => {
     const history = useHistory();
     useEffect(() => {
@@ -36,12 +36,10 @@ const ProductList = () => {
 
     );
 
-    function deleteCustomer(id) {
+    async function deleteCustomer(id) {
         const userAuthData_Token = localStorage.getItem("token");          
-        var confirmBox = window.confirm(
-            "Do you really want to delete this Product ?"
-        )
-        if (confirmBox === true) {
+        var confirmBox = await confirm("Do you really want to delete this Product ?")
+        if (confirmBox) {
             async function delCustomer() {
                 try {
                     const response = await axios.delete(process.env.REACT_APP_API_SERVER_PORT + `products/delete-products/${id}`, { headers: { "authorization": `Bearer ${userAuthData_Token}` } });

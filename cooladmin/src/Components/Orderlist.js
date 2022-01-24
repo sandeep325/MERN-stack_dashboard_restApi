@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-
+import { confirm } from "react-confirm-box";
 const Orderlist = () => {
 
     const history = useHistory();
@@ -48,11 +48,11 @@ const Orderlist = () => {
     );
 
     // ========================DELETE ORDER API  CALL  =======================================
-    const deleteOrder = (id) => {
+    const deleteOrder = async (id) => {
         // alert(id);
         const userAuthData_Token = localStorage.getItem("token");
-        const conDelBox = window.confirm("Do you want delete this order ?");
-        if (conDelBox === true) {
+        const conDelBox = await confirm("Do you want delete this order ?");
+        if (conDelBox) {
             //  alert(id);
             async function deleteOrder() {
 
