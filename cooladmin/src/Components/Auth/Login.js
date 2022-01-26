@@ -54,6 +54,7 @@ const Login = () => {
                     Object.keys(response.data.data).forEach(function (key) {
                         console.log('Key : ' + key + ', Value : ' + response.data.data[key])
                         localStorage.setItem(key, response.data.data[key]);
+                        localStorage.setItem("login_date", new Date());
                     })
 
                     return delay(1800).then(function () {
@@ -70,7 +71,7 @@ const Login = () => {
                 }
 
             }
-            return false;
+            // return false;
 
         }
         varifyLogin();

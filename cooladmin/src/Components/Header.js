@@ -25,6 +25,7 @@ const Header = () => {
         localStorage.removeItem('name');
         localStorage.removeItem('email');
         localStorage.removeItem('token');
+        localStorage.removeItem('login_date');
         history.push('/');
 
     } else {
