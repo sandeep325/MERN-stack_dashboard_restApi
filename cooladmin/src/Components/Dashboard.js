@@ -56,7 +56,7 @@ const Dashboard = () => {
     return (
      <React.Fragment>
      <div className="row">
-                            <div className="col-md-12">
+                            <div className="col-md-12 ">
                                 <div className="overview-wrap text-center">
                                     <h2 className="title-1 ">Dashboard</h2>
                                 </div>
